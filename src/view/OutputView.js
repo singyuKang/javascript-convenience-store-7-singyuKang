@@ -1,3 +1,4 @@
+import { Console } from "@woowacourse/mission-utils";
 import { OUTPUT_MESSAGE } from "../constants.js";
 
 const OutputView = {
@@ -7,6 +8,12 @@ const OutputView = {
 
   printMainTitle() {
     Console.print(OUTPUT_MESSAGE.MAIN_TITLE);
+  },
+
+  printProductsInfo(products) {
+    products.productList.forEach((product) => {
+      Console.print(OUTPUT_MESSAGE.PRODUCT_INFO(product));
+    });
   },
 };
 
