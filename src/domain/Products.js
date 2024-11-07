@@ -14,6 +14,10 @@ class Products {
         )
     );
   }
+
+  get productList() {
+    return this.#productList;
+  }
 }
 
 export default Products;

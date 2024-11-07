@@ -10,6 +10,22 @@ class Product {
     this.#quantity = quantity;
     this.#promotion = promotion;
   }
+
+  get name() {
+    return this.#name;
+  }
+
+  get price() {
+    return this.#price;
+  }
+
+  get quantity() {
+    return this.#quantity;
+  }
+
+  get promotion() {
+    return this.#promotion;
+  }
 }
 
 export default Product;
