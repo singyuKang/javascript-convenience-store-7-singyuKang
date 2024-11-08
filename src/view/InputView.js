@@ -35,6 +35,34 @@ const InputView = {
       }
     }
   },
+
+  async checkGetPromotion(name, quantity) {
+    while (true) {
+      try {
+        const input = await Console.readLineAsync(
+          INPUT_MESSAGE.GET_PROMOTION(name, quantity)
+        );
+        InputValidation.userDecisionValidate(input);
+        return input;
+      } catch (error) {
+        OutputView.printError(error);
+      }
+    }
+  },
+
+  async checkNotPromotion(name, quantity) {
+    while (true) {
+      try {
+        const input = await Console.readLineAsync(
+          INPUT_MESSAGE.NOT_PROMOTION(name, quantity)
+        );
+        InputValidation.userDecisionValidate(input);
+        return input;
+      } catch (error) {
+        OutputView.printError(error);
+      }
+    }
+  },
 };
 
 const InputValidation = {
@@ -81,6 +109,12 @@ const InputValidation = {
         throw new Error(ERROR_MESSAGE.OVER_QUANTITY);
       }
     });
+  },
+
+  userDecisionValidate(input) {
+    if (!(input === "Y" || input === "N")) {
+      throw new Error(ERROR_MESSAGE.USER_DECISION);
+    }
   },
 };
 

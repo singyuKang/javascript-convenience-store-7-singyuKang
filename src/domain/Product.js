@@ -23,6 +23,10 @@ class Product {
     return this.#quantity;
   }
 
+  set quantity(value) {
+    this.#quantity = value;
+  }
+
   get promotion() {
     return this.#promotion;
   }

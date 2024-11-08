@@ -15,6 +15,10 @@ class Promotions {
         )
     );
   }
+
+  get promotionList() {
+    return this.#promotionList;
+  }
 }
 
 export default Promotions;

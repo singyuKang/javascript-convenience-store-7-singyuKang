@@ -14,6 +14,10 @@ class InputProductInfo {
   get quantity() {
     return this.#quantity;
   }
+
+  set quantity(value) {
+    this.#quantity = value;
+  }
 }
 
 export default InputProductInfo;

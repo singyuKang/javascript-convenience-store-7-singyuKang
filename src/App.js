@@ -33,7 +33,9 @@ class App {
     const readItems = await InputView.readItem(convenienceController.products);
 
     // 계산처리
-    convenienceController.calculateUserProducts(readItems);
+    readItems.forEach((readItem) => {
+      convenienceController.calculateUserProducts(readItem);
+    });
 
     // 프로모션 적용 가능 확인
 
