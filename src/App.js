@@ -21,26 +21,25 @@ class App {
     const convenienceController = new ConvenienceController(products, promotions);
 
     // 시작
+    this.startConvenienceStore(convenienceController);
+  }
 
-    // 타이틀 출력
+  async startConvenienceStore(convenienceController) {
     OutputView.printMainTitle();
     OutputView.printProductsInfo(convenienceController.products);
-
     // 구매할 상품 수량입력
     const readItems = await InputView.readItem(convenienceController.products);
-
     // 계산처리
-    readItems.forEach((readItem) => {
-      convenienceController.calculateUserProducts(readItem);
-    });
-
+    await Promise.all(readItems.map((readItem) => convenienceController.calculateUserProducts(readItem)));
     // 멤버십 입력 확인
     const membership = await InputView.memberShip();
-
     // 구매 상품 내역 증정, 상품 내역, 금액 정보를 출력
-
+    OutputView.printReceipt(convenienceController.convenienceResultController, membership);
     // 추가 구매 여부 확인 안내 문구 여기서 시작부터 반복할수있도록
     const additionalPurchase = await InputView.additionalPurchase();
+    if (additionalPurchase === 'Y') {
+      this.startConvenienceStore(convenienceController);
+    }
   }
 }
 

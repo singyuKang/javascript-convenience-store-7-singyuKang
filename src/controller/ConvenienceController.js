@@ -23,6 +23,10 @@ class ConvenienceController {
     return this.#promotions;
   }
 
+  get convenienceResultController() {
+    return this.#convenienceResultController;
+  }
+
   // readItem : InputProductInfo
   async calculateUserProducts(readItem) {
     const promotionList = this.getPromotionList(readItem);
@@ -43,31 +47,35 @@ class ConvenienceController {
         if (promotionProduct.quantity - readItem.quantity >= 0) {
           //날짜가 들어가면은 할인 아니면 일반계산
           if (userRemainder === 0) {
-            this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity, promotionProduct.price);
-            this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod, promotionProduct.price);
+            this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity, promotionProduct.price, true);
+            this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod, promotionProduct.price, true);
           } else if (userRemainder === promotion.buy) {
             // 무료로 받을수 있는데 추가하시겠습니까 입력 추가
             const checkPromotion = await InputView.checkGetPromotion(promotionProduct.name, promotion.get);
             if (checkPromotion === 'Y') {
-              this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity + promotion.get, promotionProduct.price);
-              this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod + promotion.get, promotionProduct.price);
+              this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity + promotion.get, promotionProduct.price, true);
+              this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod + promotion.get, promotionProduct.price, true);
             } else if (checkPromotion === 'N') {
-              this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity, promotionProduct.price);
-              this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod, promotionProduct.price);
+              this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod * (promotion.buy + promotion.get), promotionProduct.price, true);
+              this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, userRemainder, promotionProduct.price, false);
+              this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod, promotionProduct.price, true);
             }
           } else {
-            this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity, promotionProduct.price);
-            this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod, promotionProduct.price);
+            this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod * (promotion.buy + promotion.get), promotionProduct.price, true);
+            this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, userRemainder, promotionProduct.price, false);
+            this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod, promotionProduct.price, true);
           }
           promotionProduct.quantity -= readItem.quantity;
           readItem.quantity = 0;
           break;
         } else {
           const promotionSetMod = parseInt(promotionProduct.quantity / (promotion.buy + promotion.get));
+          const promotionRemainder = promotionProduct.quantity % (promotion.buy + promotion.get);
           const checkNotPromotion = await InputView.checkNotPromotion(promotionProduct.name, readItem.quantity - promotionSetMod * (promotion.buy + promotion.get));
           if (checkNotPromotion === 'Y') {
-            this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, promotionProduct.quantity, promotionProduct.price);
-            this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, promotionSetMod, promotionProduct.price);
+            this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, promotionSetMod * (promotion.buy + promotion.get), promotionProduct.price, true);
+            this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, promotionRemainder, promotionProduct.price, false);
+            this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, promotionSetMod, promotionProduct.price, true);
           } else if (checkNotPromotion === 'N') {
             return;
           }
@@ -79,9 +87,9 @@ class ConvenienceController {
         if (promotionProduct.quantity - readItem.quantity >= 0) {
           promotionProduct.quantity -= readItem.quantity;
           readItem.quantity = 0;
-          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity, promotionProduct.price);
+          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity, promotionProduct.price, false);
         } else {
-          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, promotionProduct.quantity, promotionProduct.price);
+          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, promotionProduct.quantity, promotionProduct.price, false);
           readItem.quantity -= promotionProduct.quantity;
           promotionProduct.quantity = 0;
         }
@@ -93,12 +101,12 @@ class ConvenienceController {
       for (let i = 0; i < normalList.length; i++) {
         const normalProduct = normalList[i];
         if (normalProduct.quantity - readItem.quantity >= 0) {
-          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(normalProduct.name, readItem.quantity, normalProduct.price);
+          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(normalProduct.name, readItem.quantity, normalProduct.price, false);
           normalProduct.quantity -= readItem.quantity;
           readItem.quantity = 0;
           break;
         } else {
-          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(normalProduct.name, normalProduct.quantity, normalProduct.price);
+          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(normalProduct.name, normalProduct.quantity, normalProduct.price, false);
           readItem.quantity -= normalProduct.quantity;
           normalProduct.quantity = 0;
         }
