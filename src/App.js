@@ -1,10 +1,10 @@
-import { PRODUCT_FILE_PATH, PROMOTION_FILE_PATH } from "./constants.js";
-import ConvenienceController from "./controller/ConvenienceController.js";
-import Products from "./domain/Products.js";
-import Promotions from "./domain/Promotions.js";
-import { FileManager } from "./utils/fileManager.js";
-import { InputView } from "./view/InputView.js";
-import OutputView from "./view/OutputView.js";
+import { PRODUCT_FILE_PATH, PROMOTION_FILE_PATH } from './constants.js';
+import ConvenienceController from './controller/ConvenienceController.js';
+import Products from './domain/Products.js';
+import Promotions from './domain/Promotions.js';
+import { FileManager } from './utils/fileManager.js';
+import { InputView } from './view/InputView.js';
+import OutputView from './view/OutputView.js';
 
 class App {
   async run() {
@@ -18,10 +18,7 @@ class App {
     const promotions = new Promotions(promotionsParsing);
 
     // 편의점 컨트롤러 생성
-    const convenienceController = new ConvenienceController(
-      products,
-      promotions
-    );
+    const convenienceController = new ConvenienceController(products, promotions);
 
     // 시작
 
@@ -37,9 +34,8 @@ class App {
       convenienceController.calculateUserProducts(readItem);
     });
 
-    // 프로모션 적용 가능 확인
-
-    // 멤버십 할인 입력
+    // 멤버십 입력 확인
+    const membership = await InputView.memberShip();
 
     // 구매 상품 내역 증정, 상품 내역, 금액 정보를 출력
 
