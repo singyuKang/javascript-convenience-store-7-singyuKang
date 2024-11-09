@@ -1,5 +1,5 @@
-import { Console } from "@woowacourse/mission-utils";
-import { OUTPUT_MESSAGE } from "../constants.js";
+import { Console } from '@woowacourse/mission-utils';
+import { OUTPUT_MESSAGE } from '../constants.js';
 
 const OutputView = {
   printError(error) {
@@ -15,6 +15,8 @@ const OutputView = {
       Console.print(OUTPUT_MESSAGE.PRODUCT_INFO(product));
     });
   },
+
+  printReceipt() {},
 };
 
 export default OutputView;

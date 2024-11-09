@@ -13,11 +13,21 @@ export const INPUT_MESSAGE = Object.freeze({
   GET_PROMOTION: (name, quantity) => `현재 ${name}은(는) ${quantity}개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n`,
   NOT_PROMOTION: (name, quantity) => `현재 ${name} ${quantity}개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n`,
   MEMBERSHIP_MESSAGE: '멤버십 할인을 받으시겠습니까? (Y/N)\n',
+  ADDITIONAL_PURCHASE: '감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)\n',
 });
 
 export const OUTPUT_MESSAGE = Object.freeze({
   MAIN_TITLE: '안녕하세요. W편의점입니다.\n현재 보유하고 있는 상품입니다.\n',
   PRODUCT_INFO: (product) => `- ${product.name} ${product.price} ${productInfoOutputString.quantityString(product.quantity)} ${productInfoOutputString.promotionString(product.promotion)}`,
+  RECEIPT_TITLE: '==============W 편의점================',
+  RECEIPT_INFO: '상품명		수량	금액',
+  RECEIPT_PRODUCT: (product) => `${product.name}		${product.quantity} 	${product.price}`,
+  RECEIPT_PROMOTION_TITLE: '=============증	정===============',
+  RECEIPT_RESULT_TITLE: '====================================',
+  RECEIPT_TOTAL_PRICE: (product) => `총구매액		${product.quantity}	${product.price}`,
+  RECEIPT_PROMOTION: (price) => `행사할인			-${price}`,
+  RECEIPT_MEMBERSHIPT: (price) => `멤버십할인			-${price}`,
+  RECEIPT_HAVETOPAY: (price) => `내실돈			 ${price}`,
 });
 
 export const PRODUCT_FILE_PATH = './public/products.md';

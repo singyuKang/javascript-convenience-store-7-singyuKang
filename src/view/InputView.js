@@ -66,6 +66,18 @@ const InputView = {
       }
     }
   },
+
+  async additionalPurchase() {
+    while (true) {
+      try {
+        const input = await Console.readLineAsync(INPUT_MESSAGE.ADDITIONAL_PURCHASE);
+        InputValidation.userDecisionValidate(input);
+        return input;
+      } catch (error) {
+        OutputView.printError(error);
+      }
+    }
+  },
 };
 
 const InputValidation = {

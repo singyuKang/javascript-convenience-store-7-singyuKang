@@ -40,6 +40,7 @@ class App {
     // 구매 상품 내역 증정, 상품 내역, 금액 정보를 출력
 
     // 추가 구매 여부 확인 안내 문구 여기서 시작부터 반복할수있도록
+    const additionalPurchase = await InputView.additionalPurchase();
   }
 }
 
