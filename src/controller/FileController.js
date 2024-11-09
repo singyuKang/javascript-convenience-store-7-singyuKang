@@ -1,7 +1,7 @@
-import { PRODUCT_FILE_PATH, PROMOTION_FILE_PATH } from "../constants.js";
-import Products from "../domain/Products.js";
-import Promotions from "../domain/Promotions.js";
-import { FileManager } from "../utils/fileManager.js";
+import { PRODUCT_FILE_PATH, PROMOTION_FILE_PATH } from '../constants.js';
+import Products from '../domain/Products.js';
+import Promotions from '../domain/Promotions.js';
+import { FileManager } from '../utils/fileManager.js';
 
 class FileController {
   #fileManager;
@@ -11,16 +11,14 @@ class FileController {
   }
 
   async getProductsParsing() {
-    const productsParsing = await this.#fileManager.parseFile(
-      PRODUCT_FILE_PATH
-    );
+    const productsParsing =
+      await this.#fileManager.parseFile(PRODUCT_FILE_PATH);
     return productsParsing;
   }
 
   async getPromotionsParsing() {
-    const promotionsParsing = await this.#fileManager.parseFile(
-      PROMOTION_FILE_PATH
-    );
+    const promotionsParsing =
+      await this.#fileManager.parseFile(PROMOTION_FILE_PATH);
     return promotionsParsing;
   }
 

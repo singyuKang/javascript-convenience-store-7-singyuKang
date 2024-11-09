@@ -1,5 +1,6 @@
 class ConvenienceResultController {
   #boughtProductsInfo = [];
+  #promotionProductsInfo = [];
 
   constructor() {}
 
@@ -9,6 +10,14 @@ class ConvenienceResultController {
 
   set boughtProductsInfo(value) {
     this.#boughtProductsInfo.push(value);
+  }
+
+  get promotionProductsInfo() {
+    return this.#promotionProductsInfo;
+  }
+
+  set promotionProductsInfo(value) {
+    this.#promotionProductsInfo.push(value);
   }
 }
 

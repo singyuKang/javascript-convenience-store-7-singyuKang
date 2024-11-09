@@ -1,4 +1,4 @@
-import Promotion from "./Promotion.js";
+import Promotion from './Promotion.js';
 
 class Promotions {
   #promotionList;
@@ -11,8 +11,8 @@ class Promotions {
           Number(promotion.buy),
           Number(promotion.get),
           promotion.start_date,
-          promotion.end_date
-        )
+          promotion.end_date,
+        ),
     );
   }
 

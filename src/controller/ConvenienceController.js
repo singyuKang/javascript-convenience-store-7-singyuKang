@@ -1,7 +1,9 @@
-import BoughtProduct from "../domain/BoughtProduct.js";
-import { InputView } from "../view/InputView.js";
-import ConvenienceResultController from "./ConvenienceResultController.js";
+import BoughtProduct from '../domain/BoughtProduct.js';
+import { checkTimes } from '../utils/dateTime.js';
+import { InputView } from '../view/InputView.js';
+import ConvenienceResultController from './ConvenienceResultController.js';
 
+// prettier-ignor
 class ConvenienceController {
   #products;
   #promotions;
@@ -23,7 +25,6 @@ class ConvenienceController {
 
   // readItem : InputProductInfo
   async calculateUserProducts(readItem) {
-    const matchProductNameList = this.matchProductName(readItem);
     const promotionList = this.getPromotionList(readItem);
     const normalList = this.getNormalList(readItem);
 
@@ -31,35 +32,59 @@ class ConvenienceController {
     for (let i = 0; i < promotionList.length; i++) {
       const promotionProduct = promotionList[i];
       const promotion = this.findPromotion(promotionProduct);
-      if (promotionProduct.quantity - readItem.quantity >= 0) {
-        // 구매완료
+      const userSetMod = parseInt(readItem.quantity / (promotion.buy + promotion.get));
+      const checkPromotionTimes = checkTimes(promotion.start_date, promotion.end_date);
+      const userRemainder = readItem.quantity % (promotion.buy + promotion.get);
+      if (promotionProduct.quantity === 0) {
+        continue;
+      }
 
-        //날짜가 들어가면은 할인 아니면 일반계산
-        const userSetMod = readItem.quantity / (promotion.buy + promotion.get);
-        /* prettier-ignore */
-        const userRemainder = readItem.quantity % (promotion.buy + promotion.get);
-        if (userRemainder === 0) {
-          /* prettier-ignore */
-          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod * (promotion.buy + promotion.get) ,promotionProduct.price)
+      if (checkPromotionTimes) {
+        if (promotionProduct.quantity - readItem.quantity >= 0) {
+          //날짜가 들어가면은 할인 아니면 일반계산
+          if (userRemainder === 0) {
+            this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity, promotionProduct.price);
+            this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod, promotionProduct.price);
+          } else if (userRemainder === promotion.buy) {
+            // 무료로 받을수 있는데 추가하시겠습니까 입력 추가
+            const checkPromotion = await InputView.checkGetPromotion(promotionProduct.name, promotion.get);
+            if (checkPromotion === 'Y') {
+              this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity + promotion.get, promotionProduct.price);
+              this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod + promotion.get, promotionProduct.price);
+            } else if (checkPromotion === 'N') {
+              this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity, promotionProduct.price);
+              this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod, promotionProduct.price);
+            }
+          } else {
+            this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity, promotionProduct.price);
+            this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod, promotionProduct.price);
+          }
           promotionProduct.quantity -= readItem.quantity;
           readItem.quantity = 0;
-        } else if (userRemainder === promotion.buy) {
-          // 무료로 받을수 있는데 추가하시겠습니까 입력 추가
-          /* prettier-ignore */
-          const checkPromotion = await InputView.checkGetPromotion(promotionProduct.name, promotion.get);
-          // this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, )
+          break;
         } else {
-          /* prettier-ignore */
-          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name,readItem.quantity,promotionProduct.price)
+          const promotionSetMod = parseInt(promotionProduct.quantity / (promotion.buy + promotion.get));
+          const checkNotPromotion = await InputView.checkNotPromotion(promotionProduct.name, readItem.quantity - promotionSetMod * (promotion.buy + promotion.get));
+          if (checkNotPromotion === 'Y') {
+            this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, promotionProduct.quantity, promotionProduct.price);
+            this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, promotionSetMod, promotionProduct.price);
+          } else if (checkNotPromotion === 'N') {
+            return;
+          }
+          readItem.quantity -= promotionProduct.quantity;
+          promotionProduct.quantity = 0;
+        }
+      } else {
+        // 날짜 미포함 일반계산
+        if (promotionProduct.quantity - readItem.quantity >= 0) {
           promotionProduct.quantity -= readItem.quantity;
           readItem.quantity = 0;
+          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity, promotionProduct.price);
+        } else {
+          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, promotionProduct.quantity, promotionProduct.price);
+          readItem.quantity -= promotionProduct.quantity;
+          promotionProduct.quantity = 0;
         }
-
-        break;
-      } else {
-        // TODO
-        readItem.quantity -= promotionProduct.quantity;
-        promotionProduct.quantity = 0;
       }
     }
 
@@ -68,10 +93,12 @@ class ConvenienceController {
       for (let i = 0; i < normalList.length; i++) {
         const normalProduct = normalList[i];
         if (normalProduct.quantity - readItem.quantity >= 0) {
+          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(normalProduct.name, readItem.quantity, normalProduct.price);
           normalProduct.quantity -= readItem.quantity;
           readItem.quantity = 0;
           break;
         } else {
+          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(normalProduct.name, normalProduct.quantity, normalProduct.price);
           readItem.quantity -= normalProduct.quantity;
           normalProduct.quantity = 0;
         }
@@ -79,34 +106,26 @@ class ConvenienceController {
     }
   }
 
-  calculatePromotion() {}
+  calculatePromotionDiscount() {}
 
   findPromotion(promotionProduct) {
-    const filterPromotion = this.#promotions.promotionList.filter(
-      (promotion) => promotionProduct.promotion === promotion.name
-    );
+    const filterPromotion = this.#promotions.promotionList.filter((promotion) => promotionProduct.promotion === promotion.name);
     return filterPromotion[0];
   }
 
   // readItem : InputProductInfo
   matchProductName(readItem) {
-    const filterMatchName = this.#products.productList.filter(
-      (product) => product.name === readItem.name
-    );
+    const filterMatchName = this.#products.productList.filter((product) => product.name === readItem.name);
     return filterMatchName;
   }
 
   getPromotionList(readItem) {
-    const filterPromotionList = this.#products.productList.filter(
-      (product) => product.name == readItem.name && product.promotion
-    );
+    const filterPromotionList = this.#products.productList.filter((product) => product.name == readItem.name && product.promotion);
     return filterPromotionList;
   }
 
   getNormalList(readItem) {
-    const filterNormalList = this.#products.productList.filter(
-      (product) => product.name === readItem.name && !product.promotion
-    );
+    const filterNormalList = this.#products.productList.filter((product) => product.name === readItem.name && !product.promotion);
     return filterNormalList;
   }
 }
