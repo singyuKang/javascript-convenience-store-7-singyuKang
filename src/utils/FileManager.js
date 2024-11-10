@@ -24,17 +24,33 @@ class FileManager {
       const data = await this.readFile(filePath);
       const rows = data.split(ROW_SPLIT_STANDARD).filter((row) => row.trim() !== '');
       const headers = rows[HEADER_NUMBER].split(COLUMN_SPLIT_STANDARD);
-
-      return rows.slice(START_ROW_NUMBER).map((row) => {
+      const result = rows.slice(START_ROW_NUMBER).map((row) => {
         const values = row.split(COLUMN_SPLIT_STANDARD);
         return headers.reduce((obj, header, index) => {
           obj[header] = values[index] === 'null' ? null : values[index];
           return obj;
         }, {});
       });
+      // this.addNonPromotion(result)
+      return result;
     } catch (err) {
       throw new Error(ERROR_MESSAGE.FILE_PARSING);
     }
+  }
+
+  addNonPromotion(result) {
+    const addResult = [...result];
+    result.forEach((product) => {
+      if (product.promotion) {
+        const hasNonPromotionVersion = result.some((item) => item.name === product.name && item.price === product.price && item.promotion === null);
+
+        // 만약 프로모션이 없는 버전이 없다면 추가
+        if (!hasNonPromotionVersion) {
+          addResult.push({ ...product, quantity: 0, promotion: null });
+        }
+      }
+    });
+    return addResult;
   }
 }
 
