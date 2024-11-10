@@ -1,4 +1,4 @@
-import FileManager from './utils/fileManager.js';
+import FileManager from './utils/FileManager.js';
 
 class App {
   async run() {
