@@ -4,7 +4,6 @@ import { checkTimes } from '../utils/dateTime.js';
 import { InputView } from '../view/InputView.js';
 import ConvenienceResultController from './ConvenienceResultController.js';
 
-// prettier-ignor
 class ConvenienceController {
   #products;
   #promotions;
