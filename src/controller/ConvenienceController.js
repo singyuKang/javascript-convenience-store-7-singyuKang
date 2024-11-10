@@ -85,9 +85,9 @@ class ConvenienceController {
       } else {
         // 날짜 미포함 일반계산
         if (promotionProduct.quantity - readItem.quantity >= 0) {
+          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity, promotionProduct.price, false);
           promotionProduct.quantity -= readItem.quantity;
           readItem.quantity = 0;
-          this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity, promotionProduct.price, false);
         } else {
           this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, promotionProduct.quantity, promotionProduct.price, false);
           readItem.quantity -= promotionProduct.quantity;
