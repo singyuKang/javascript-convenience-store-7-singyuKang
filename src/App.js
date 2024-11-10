@@ -1,11 +1,10 @@
-import { PRODUCT_FILE_PATH, PROMOTION_FILE_PATH } from './constants.js';
+import { PRODUCT_FILE_PATH, PROMOTION_FILE_PATH, USER_SAY_YES } from './constants.js';
 import ConvenienceController from './controller/ConvenienceController.js';
 import Products from './domain/Products.js';
 import Promotions from './domain/Promotions.js';
 import { FileManager } from './utils/fileManager.js';
 import { InputView } from './view/InputView.js';
 import OutputView from './view/OutputView.js';
-import { Console } from '@woowacourse/mission-utils';
 
 class App {
   async run() {
@@ -32,10 +31,10 @@ class App {
       OutputView.printReceipt(convenienceController.convenienceResultController, membership);
 
       additionalPurchase = await InputView.additionalPurchase();
-      if (additionalPurchase === 'Y') {
+      if (additionalPurchase === USER_SAY_YES) {
         convenienceController.convenienceResultController.resetProducts();
       }
-    } while (additionalPurchase === 'Y');
+    } while (additionalPurchase === USER_SAY_YES);
   }
 
   async startConvenienceStore(convenienceController) {}

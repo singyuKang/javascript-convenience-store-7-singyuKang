@@ -1,5 +1,5 @@
 import { Console } from '@woowacourse/mission-utils';
-import { ERROR_MESSAGE, INPUT_MESSAGE } from '../constants.js';
+import { ERROR_MESSAGE, INPUT_MESSAGE, USER_SAY_NO, USER_SAY_YES } from '../constants.js';
 import OutputView from './OutputView.js';
 import { InputViewStringHandler } from '../utils/stringHandler.js';
 import InputProductInfo from '../domain/InputProductInfo.js';
@@ -122,7 +122,7 @@ const InputValidation = {
   },
 
   userDecisionValidate(input) {
-    if (!(input === 'Y' || input === 'N')) {
+    if (!(input === USER_SAY_YES || input === USER_SAY_NO)) {
       throw new Error(ERROR_MESSAGE.USER_DECISION);
     }
   },

@@ -1,3 +1,4 @@
+import { USER_SAY_NO, USER_SAY_YES } from '../constants.js';
 import BoughtProduct from '../domain/BoughtProduct.js';
 import { checkTimes } from '../utils/dateTime.js';
 import { InputView } from '../view/InputView.js';
@@ -52,10 +53,10 @@ class ConvenienceController {
           } else if (userRemainder === promotion.buy) {
             // 무료로 받을수 있는데 추가하시겠습니까 입력 추가
             const checkPromotion = await InputView.checkGetPromotion(promotionProduct.name, promotion.get);
-            if (checkPromotion === 'Y') {
+            if (checkPromotion === USER_SAY_YES) {
               this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, readItem.quantity + promotion.get, promotionProduct.price, true);
               this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod + promotion.get, promotionProduct.price, true);
-            } else if (checkPromotion === 'N') {
+            } else if (checkPromotion === USER_SAY_NO) {
               this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod * (promotion.buy + promotion.get), promotionProduct.price, true);
               this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, userRemainder, promotionProduct.price, false);
               this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, userSetMod, promotionProduct.price, true);
@@ -72,11 +73,11 @@ class ConvenienceController {
           const promotionSetMod = parseInt(promotionProduct.quantity / (promotion.buy + promotion.get));
           const promotionRemainder = promotionProduct.quantity % (promotion.buy + promotion.get);
           const checkNotPromotion = await InputView.checkNotPromotion(promotionProduct.name, readItem.quantity - promotionSetMod * (promotion.buy + promotion.get));
-          if (checkNotPromotion === 'Y') {
+          if (checkNotPromotion === USER_SAY_YES) {
             this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, promotionSetMod * (promotion.buy + promotion.get), promotionProduct.price, true);
             this.#convenienceResultController.boughtProductsInfo = new BoughtProduct(promotionProduct.name, promotionRemainder, promotionProduct.price, false);
             this.#convenienceResultController.promotionProductsInfo = new BoughtProduct(promotionProduct.name, promotionSetMod, promotionProduct.price, true);
-          } else if (checkNotPromotion === 'N') {
+          } else if (checkNotPromotion === USER_SAY_NO) {
             return;
           }
           readItem.quantity -= promotionProduct.quantity;

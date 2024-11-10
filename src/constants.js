@@ -34,3 +34,5 @@ export const OUTPUT_MESSAGE = Object.freeze({
 export const PRODUCT_FILE_PATH = './public/products.md';
 export const PROMOTION_FILE_PATH = './public/promotions.md';
 export const MAXUMUM_MAMBERSHIP_PRICE = 8000;
+export const USER_SAY_YES = 'Y';
+export const USER_SAY_NO = 'N';
