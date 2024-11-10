@@ -27,7 +27,7 @@ class App {
       OutputView.printProductsInfo(convenienceController.products);
       const readItems = await InputView.readItem(convenienceController.products);
 
-      await Promise.all(readItems.map((readItem) => convenienceController.calculateUserProducts(readItem)));
+      // await Promise.all(readItems.map((readItem) => convenienceController.calculateUserProducts(readItem)));
       const membership = await InputView.memberShip();
       OutputView.printReceipt(convenienceController.convenienceResultController, membership);
 
