@@ -38,4 +38,4 @@ class FileManager {
   }
 }
 
-export { FileManager };
+export default FileManager;

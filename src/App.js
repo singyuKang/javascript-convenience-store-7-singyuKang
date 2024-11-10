@@ -1,7 +1,9 @@
+import FileManager from './utils/fileManager.js';
+
 class App {
   async run() {
     // // 파일 입출력
-    // const fileManager = new FileManager();
+    const fileManager = new FileManager();
     // const productsParsing = await fileManager.parseFile(PRODUCT_FILE_PATH);
     // const promotionsParsing = await fileManager.parseFile(PROMOTION_FILE_PATH);
     // // 도메인 변환
