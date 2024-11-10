@@ -10,19 +10,16 @@ import { Console } from '@woowacourse/mission-utils';
 class App {
   async run() {
     // 파일 입출력
-    const fileManager = new FileManager();
-    const productsParsing = await fileManager.parseFile(PRODUCT_FILE_PATH);
-    const promotionsParsing = await fileManager.parseFile(PROMOTION_FILE_PATH);
-
-    // 도메인 변환
-    const products = new Products(productsParsing);
-    const promotions = new Promotions(promotionsParsing);
-
-    // 편의점 컨트롤러 생성
-    const convenienceController = new ConvenienceController(products, promotions);
-
-    // 시작
-    this.startConvenienceStore(convenienceController);
+    // const fileManager = new FileManager();
+    // const productsParsing = await fileManager.parseFile(PRODUCT_FILE_PATH);
+    // const promotionsParsing = await fileManager.parseFile(PROMOTION_FILE_PATH);
+    // // 도메인 변환
+    // const products = new Products(productsParsing);
+    // const promotions = new Promotions(promotionsParsing);
+    // // 편의점 컨트롤러 생성
+    // const convenienceController = new ConvenienceController(products, promotions);
+    // // 시작
+    // this.startConvenienceStore(convenienceController);
   }
 
   async startConvenienceStore(convenienceController) {
