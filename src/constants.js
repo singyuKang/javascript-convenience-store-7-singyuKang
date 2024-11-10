@@ -1,4 +1,4 @@
-import { productInfoOutputString } from './utils/stringHandler.js';
+import { comma, productInfoOutputString } from './utils/stringHandler.js';
 
 export const ERROR_MESSAGE = Object.freeze({
   READ_ITEM: '[ERROR] : 구매하실 상품명과 수량을 형식에 맞춰 입력해주세요',
@@ -18,17 +18,17 @@ export const INPUT_MESSAGE = Object.freeze({
 
 export const OUTPUT_MESSAGE = Object.freeze({
   MAIN_TITLE: '안녕하세요. W편의점입니다.\n현재 보유하고 있는 상품입니다.\n',
-  PRODUCT_INFO: (product) => `- ${product.name} ${product.price} ${productInfoOutputString.quantityString(product.quantity)} ${productInfoOutputString.promotionString(product.promotion)}`,
+  PRODUCT_INFO: (product) => `- ${product.name} ${comma(product.price)}원 ${productInfoOutputString.quantityString(product.quantity)} ${productInfoOutputString.promotionString(product.promotion)}`,
   RECEIPT_TITLE: '==============W 편의점================',
   RECEIPT_INFO: '상품명		수량	금액',
-  RECEIPT_PRODUCT: (product) => `${product.name}		${product.quantity} 	${product.price}`,
+  RECEIPT_PRODUCT: (product) => `${product.name}		${product.quantity} 	${comma(product.price)}`,
   RECEIPT_PROMOTION_TITLE: '=============증	정===============',
   RECEIPT_PROMOTION: (product) => `${product.name}		${product.quantity}`,
   RECEIPT_RESULT_TITLE: '====================================',
-  RECEIPT_TOTAL_PRICE: (count, price) => `총구매액		${count}	${price}`,
-  RECEIPT_PROMOTION_PRICE: (price) => `행사할인			-${price}`,
-  RECEIPT_MEMBERSHIPT: (price) => `멤버십할인			-${price}`,
-  RECEIPT_HAVETOPAY: (price) => `내실돈			 ${price}`,
+  RECEIPT_TOTAL_PRICE: (count, price) => `총구매액		${count}	${comma(price)}`,
+  RECEIPT_PROMOTION_PRICE: (price) => `행사할인			-${comma(price)}`,
+  RECEIPT_MEMBERSHIPT: (price) => `멤버십할인			-${comma(price)}`,
+  RECEIPT_HAVETOPAY: (price) => `내실돈			 ${comma(price)}`,
 });
 
 export const PRODUCT_FILE_PATH = './public/products.md';

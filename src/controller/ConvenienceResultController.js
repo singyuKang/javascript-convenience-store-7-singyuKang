@@ -71,7 +71,7 @@ class ConvenienceResultController {
   }
 
   calculateMemberShip(membership) {
-    if (!membership) {
+    if (membership === 'N') {
       return 0;
     }
     let membershipPrice = 0;
@@ -88,10 +88,10 @@ class ConvenienceResultController {
     return membershipPrice;
   }
 
-  calculatePay() {
+  calculatePay(membership) {
     const totalPrice = this.getTotalPrice();
     const promotionPrice = this.getPromotionPrice();
-    const membershipPrice = this.calculateMemberShip();
+    const membershipPrice = this.calculateMemberShip(membership);
     return totalPrice - promotionPrice - membershipPrice;
   }
 

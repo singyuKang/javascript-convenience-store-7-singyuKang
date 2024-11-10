@@ -5,6 +5,7 @@ import Promotions from './domain/Promotions.js';
 import { FileManager } from './utils/fileManager.js';
 import { InputView } from './view/InputView.js';
 import OutputView from './view/OutputView.js';
+import { Console } from '@woowacourse/mission-utils';
 
 class App {
   async run() {
@@ -20,15 +21,11 @@ class App {
     // 편의점 컨트롤러 생성
     const convenienceController = new ConvenienceController(products, promotions);
 
-    // 시작
-    this.startConvenienceStore(convenienceController);
-  }
-
-  async startConvenienceStore(convenienceController) {
     OutputView.printMainTitle();
     OutputView.printProductsInfo(convenienceController.products);
     // 구매할 상품 수량입력
     const readItems = await InputView.readItem(convenienceController.products);
+
     // 계산처리
     await Promise.all(readItems.map((readItem) => convenienceController.calculateUserProducts(readItem)));
     // 멤버십 입력 확인
@@ -38,9 +35,15 @@ class App {
     // 추가 구매 여부 확인 안내 문구 여기서 시작부터 반복할수있도록
     const additionalPurchase = await InputView.additionalPurchase();
     if (additionalPurchase === 'Y') {
+      convenienceController.convenienceResultController.resetProducts();
       this.startConvenienceStore(convenienceController);
     }
+
+    // 시작
+    // this.startConvenienceStore(convenienceController);
   }
+
+  async startConvenienceStore(convenienceController) {}
 }
 
 export default App;

@@ -30,7 +30,7 @@ const OutputView = {
     Console.print(OUTPUT_MESSAGE.RECEIPT_TOTAL_PRICE(convenienceResultController.getTotalCount(), convenienceResultController.getTotalPrice()));
     Console.print(OUTPUT_MESSAGE.RECEIPT_PROMOTION_PRICE(convenienceResultController.getPromotionPrice()));
     Console.print(OUTPUT_MESSAGE.RECEIPT_MEMBERSHIPT(convenienceResultController.calculateMemberShip(membership)));
-    Console.print(OUTPUT_MESSAGE.RECEIPT_HAVETOPAY(convenienceResultController.calculatePay()));
+    Console.print(OUTPUT_MESSAGE.RECEIPT_HAVETOPAY(convenienceResultController.calculatePay(membership)));
   },
 };
 
