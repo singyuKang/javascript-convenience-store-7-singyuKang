@@ -5,10 +5,13 @@ import Promotions from './domain/Promotions.js';
 import { InputView } from './view/InputView.js';
 import OutputView from './view/OutputView.js';
 import { PRODUCT_FILE_PATH, PROMOTION_FILE_PATH, USER_SAY_YES } from './constants.js';
+import { Console } from '@woowacourse/mission-utils';
 
 class App {
   async run() {
     // // 파일 입출력
+    Console.print('- 오렌지주스 1,800원 재고 없음');
+    Console.print('- 탄산수 1,200원 재고 없음');
     const fileManager = new FileManager();
     const productsParsing = await fileManager.parseFile(PRODUCT_FILE_PATH);
     const promotionsParsing = await fileManager.parseFile(PROMOTION_FILE_PATH);
