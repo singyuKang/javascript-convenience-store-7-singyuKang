@@ -28,7 +28,7 @@ class ConvenienceResultController {
       if (existingProduct) {
         existingProduct.quantity += boughtProduct.quantity;
       } else {
-        acc.push({ name: boughtProduct.name, quantity: boughtProduct.quantity, price: boughtProduct.price });
+        acc.push({ name: boughtProduct.name, quantity: boughtProduct.quantity, price: boughtProduct.price * boughtProduct.quantity });
       }
       return acc;
     }, []);

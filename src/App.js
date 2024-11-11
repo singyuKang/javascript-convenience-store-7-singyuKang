@@ -5,7 +5,6 @@ import Promotions from './domain/Promotions.js';
 import { InputView } from './view/InputView.js';
 import OutputView from './view/OutputView.js';
 import { PRODUCT_FILE_PATH, PROMOTION_FILE_PATH, USER_SAY_YES } from './constants.js';
-import { Console } from '@woowacourse/mission-utils';
 
 class App {
   async run() {

@@ -31,7 +31,6 @@ class FileManager {
           return obj;
         }, {});
       });
-      // this.addNonPromotion(result)
       return result;
     } catch (err) {
       throw new Error(ERROR_MESSAGE.FILE_PARSING);
