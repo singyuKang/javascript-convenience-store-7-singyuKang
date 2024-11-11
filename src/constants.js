@@ -24,7 +24,7 @@ export const OUTPUT_MESSAGE = Object.freeze({
   RECEIPT_PRODUCT: (product) => `${product.name}		${product.quantity} 	${comma(product.price)}`,
   RECEIPT_PROMOTION_TITLE: '=============증	    정===============',
   RECEIPT_PROMOTION: (product) => `${product.name}	${product.quantity}`,
-  RECEIPT_RESULT_TITLE: '====================================',
+  RECEIPT_RESULT_TITLE: '=====================================',
   RECEIPT_TOTAL_PRICE: (count, price) => `총구매액        ${count}	         ${comma(price)}`,
   RECEIPT_PROMOTION_PRICE: (price) => `행사할인		        -${comma(price)}`,
   RECEIPT_MEMBERSHIPT: (price) => `멤버십할인		        -${comma(price)}`,

@@ -42,8 +42,6 @@ class FileManager {
     result.forEach((product) => {
       if (product.promotion) {
         const hasNonPromotionVersion = result.some((item) => item.name === product.name && item.price === product.price && item.promotion === null);
-
-        // 만약 프로모션이 없는 버전이 없다면 추가
         if (!hasNonPromotionVersion) {
           addResult.push({ ...product, quantity: 0, promotion: null });
         }
