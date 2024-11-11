@@ -20,56 +20,16 @@ export const OUTPUT_MESSAGE = Object.freeze({
   MAIN_TITLE: '안녕하세요. W편의점입니다.\n현재 보유하고 있는 상품입니다.\n',
   PRODUCT_INFO: (product) => `- ${product.name} ${comma(product.price)}원 ${productInfoOutputString.quantityString(product.quantity)} ${productInfoOutputString.promotionString(product.promotion)}`,
   RECEIPT_TITLE: '==============W 편의점================',
-  RECEIPT_HEADER: () => {
-    return [padString('상품명', 16) + padString('수량', 10) + padString('금액', 10)].join('');
-  },
-  RECEIPT_PRODUCT: (product) => {
-    return [padString(product.name, 16) + padString(product.quantity.toString(), 10) + padString(comma(product.price), 10)].join('');
-  },
-  RECEIPT_PROMOTION_TITLE: '=============증	     정===============',
-  RECEIPT_PROMOTION: (product) => {
-    return [padString(product.name, 16) + padString(product.quantity.toString(), 8)].join('');
-  },
-  RECEIPT_RESULT_TITLE: '======================================',
-  RECEIPT_TOTAL_PRICE: (count, price) => {
-    return [padString('총구매액', 16) + padString(count.toString(), 8) + padString(comma(price), 12)].join('');
-  },
-  RECEIPT_PROMOTION_PRICE: (price) => {
-    return [padString('행사할인', 16) + padString('', 8) + padString('-' + comma(price), 12)].join('');
-  },
-  RECEIPT_MEMBERSHIPT: (price) => {
-    return [padString('멤버십할인', 16) + padString('', 8) + padString('-' + comma(price), 12)].join('');
-  },
-  RECEIPT_HAVETOPAY: (price) => {
-    return [padString('내실돈', 16) + padString('', 8) + padString(comma(price), 12)].join('');
-  },
-  RECEIPT_PROMOTION: (product) => {
-    return [padString(product.name, 16) + padString(product.quantity.toString(), 8)].join('');
-  },
+  RECEIPT_INFO: '상품명		수량	금액',
+  RECEIPT_PRODUCT: (product) => `${product.name}		${product.quantity} 	${comma(product.price)}`,
+  RECEIPT_PROMOTION_TITLE: '=============증	    정===============',
+  RECEIPT_PROMOTION: (product) => `${product.name}	${product.quantity}`,
+  RECEIPT_RESULT_TITLE: '====================================',
+  RECEIPT_TOTAL_PRICE: (count, price) => `총구매액        ${count}	         ${comma(price)}`,
+  RECEIPT_PROMOTION_PRICE: (price) => `행사할인		        -${comma(price)}`,
+  RECEIPT_MEMBERSHIPT: (price) => `멤버십할인		        -${comma(price)}`,
+  RECEIPT_HAVETOPAY: (price) => `내실돈			        ${comma(price)}`,
 });
-
-const padString = (str, length, padChar = ' ') => {
-  const currentWidth = getStringWidth(str);
-  const padding = length - currentWidth;
-  return str + padChar.repeat(Math.max(0, padding));
-};
-
-const getStringWidth = (str) => {
-  return [...str].reduce((width, char) => {
-    return width + (isKorean(char) ? 2 : 1);
-  }, 0);
-};
-
-const isKorean = (char) => {
-  const unicode = char.charCodeAt(0);
-  return (unicode >= 0xac00 && unicode <= 0xd7a3) || (unicode >= 0x3131 && unicode <= 0x318e);
-};
-
-const padStringRight = (str, length, padChar = ' ') => {
-  const currentWidth = getStringWidth(str);
-  const padding = length - currentWidth;
-  return padChar.repeat(Math.max(0, padding)) + str;
-};
 
 export const PRODUCT_FILE_PATH = './public/products.md';
 export const PROMOTION_FILE_PATH = './public/promotions.md';
