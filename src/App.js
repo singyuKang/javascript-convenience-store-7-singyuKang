@@ -29,7 +29,9 @@ class App {
     do {
       this.printConvenienceTitle(convenienceController);
       const readItems = await InputView.readItem(convenienceController.products);
-      await Promise.all(readItems.map((readItem) => convenienceController.calculateUserProducts(readItem)));
+      for (const readItem of readItems) {
+        await convenienceController.calculateUserProducts(readItem);
+      }
       const membership = await InputView.memberShip();
       OutputView.printReceipt(convenienceController.convenienceResultController, membership);
       additionalPurchase = await InputView.additionalPurchase();
