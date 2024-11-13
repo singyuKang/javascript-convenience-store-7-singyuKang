@@ -76,7 +76,18 @@ class ConvenienceController {
       this.addPromotionProduct(promotionProduct, userSetMod, true);
     } else if (userRemainder === promotion.buy) {
       // 무료로 받을수 있는데 추가하시겠습니까 입력 추가
-      await this.offerAdditionalPromotion(promotionProduct, promotion, readItem, userSetMod, userRemainder);
+      if (promotionProduct.quantity - (readItem.quantity + promotion.get) < 0) {
+        const checkNotPromotion = await InputView.checkNotPromotion(promotionProduct.name, userRemainder);
+        if (checkNotPromotion === USER_SAY_YES) {
+          this.addBoughtProduct(promotionProduct, userSetMod * (promotion.buy + promotion.get), true);
+          this.addBoughtProduct(promotionProduct, userRemainder, false);
+          this.addPromotionProduct(promotionProduct, userSetMod, true);
+          readItem.quantity = 0;
+          promotionProduct.quantity = 0;
+        }
+      } else {
+        await this.offerAdditionalPromotion(promotionProduct, promotion, readItem, userSetMod, userRemainder);
+      }
     } else {
       this.addBoughtProduct(promotionProduct, userSetMod * (promotion.buy + promotion.get), true);
       this.addBoughtProduct(promotionProduct, userRemainder, false);

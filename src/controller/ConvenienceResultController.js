@@ -27,6 +27,7 @@ class ConvenienceResultController {
       const existingProduct = acc.find((item) => item.name === boughtProduct.name);
       if (existingProduct) {
         existingProduct.quantity += boughtProduct.quantity;
+        existingProduct.price += boughtProduct.price;
       } else {
         acc.push({ name: boughtProduct.name, quantity: boughtProduct.quantity, price: boughtProduct.price * boughtProduct.quantity });
       }
